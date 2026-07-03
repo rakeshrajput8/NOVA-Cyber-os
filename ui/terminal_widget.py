@@ -1,5 +1,7 @@
 from PySide6.QtWidgets import QTextEdit
+from PySide6.QtGui import QColor
 from PySide6.QtCore import QTimer
+
 
 class TerminalWidget(QTextEdit):
 
@@ -9,33 +11,34 @@ class TerminalWidget(QTextEdit):
         self.setReadOnly(True)
 
         self.setStyleSheet("""
-            background-color:black;
-            color:#00ff66;
-            border:none;
-            font-family:Consolas;
-            font-size:14px;
+            QTextEdit{
+                background:black;
+                color:#00ff66;
+                border:2px solid #00ff66;
+                font-family:Consolas;
+                font-size:13px;
+            }
         """)
 
-        self.lines = [
-            "[ OK ] Initializing NOVA AI...",
-            "[ OK ] Loading Security Module...",
-            "[ OK ] Checking CPU...",
-            "[ OK ] Checking RAM...",
-            "[ OK ] Camera Ready...",
-            "[ OK ] Internet Connected...",
-            "[ OK ] Awaiting Hand Scan..."
+        self.logs = [
+            "[ OK ] NOVA CORE LOADED",
+            "[ OK ] AI ENGINE READY",
+            "[ OK ] SECURITY MODULE ONLINE",
+            "[ OK ] CAMERA INITIALIZED",
+            "[ OK ] TERMINAL READY",
+            "[ OK ] WAITING FOR USER..."
         ]
 
         self.index = 0
 
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.write_line)
-        self.timer.start(700)
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.add_log)
+        self.timer.start(900)
 
-    def write_line(self):
+    def add_log(self):
 
-        if self.index < len(self.lines):
+        if self.index < len(self.logs):
 
-            self.append(self.lines[self.index])
+            self.append(self.logs[self.index])
 
             self.index += 1
